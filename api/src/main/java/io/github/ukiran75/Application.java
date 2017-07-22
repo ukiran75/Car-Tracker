@@ -23,8 +23,8 @@ public class Application {
         //Gmail SMPT Configuration
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
-        mailSender.setUsername("ukiran75@gmail.com");
-        mailSender.setPassword("localize");
+        mailSender.setUsername("");
+        mailSender.setPassword("");
 
         Properties javaMailProperties = new Properties();
         javaMailProperties.put("mail.smtp.ssl.trust", "smtp.gmail.com");
