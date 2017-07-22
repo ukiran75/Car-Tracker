@@ -49,9 +49,6 @@ public class VehiclesServiceImpl implements VehiclesService {
      */
     public String getAllVehicles() {
         List<Vehicle> vehicles = vehiclesRepository.getAllVehicles();
-        if (vehicles.isEmpty()) {
-            throw new ResourceNotFoundException("No Vehicles uploaded yet.");
-        }
         ObjectMapper mapper = new ObjectMapper();
         try {
             return mapper.writeValueAsString(vehicles);
