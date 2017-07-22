@@ -1,0 +1,25 @@
+.IntroImage{
+    width: 600px;
+    margin-top: 3%;
+}
+.IntroText{
+    width: 400px;
+    margin: 3% 0 2% 2%;
+
+}
+@media(max-width: 720px){
+    .IntroImage{
+        height: 300px;
+        width: 100%;
+        margin: 2%;
+    }
+    .IntroText{
+        width: 100%;
+        margin:0 2% 2% 2%;
+
+    }
+}
+.container{
+    display: flex;
+    flex-wrap: wrap;
+}

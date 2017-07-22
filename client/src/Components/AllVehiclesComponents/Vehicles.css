@@ -1,0 +1,20 @@
+.container{
+   display: flex;
+   flex-wrap: wrap;
+   justify-content:center;
+}
+.card{
+   width: 350px;
+   height: 400px;
+   margin: 10px;
+}
+
+@media (max-width: 720px) {
+   .card{
+      width: 100%;
+   }
+   .container{
+      margin-top: 2%;
+   }
+
+}
