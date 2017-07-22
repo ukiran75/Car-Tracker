@@ -15,11 +15,13 @@ public class VehiclesController {
     @Autowired
     VehiclesService vehiclesService;
 
+    //Mapping for put(upsert) vehicles.
     @RequestMapping(method = RequestMethod.PUT)
     public void upsertVehicles(@RequestBody String vehicles) {
         vehiclesService.upsertVehicles(vehicles);
     }
 
+    //Mapping for getting all the vehicles.
     @RequestMapping(method = RequestMethod.GET)
     public String getAllVehicles() {
         return vehiclesService.getAllVehicles();

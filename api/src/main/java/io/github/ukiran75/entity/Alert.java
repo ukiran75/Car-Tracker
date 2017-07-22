@@ -15,7 +15,8 @@ public class Alert {
     @Id
     String id;
     String vin;
-    Date timeStamp;
+    String timeStamp;
+    String alertReason;
     String alertType;
 
     public Alert() {
@@ -34,12 +35,20 @@ public class Alert {
         this.vin = vin;
     }
 
-    public Date getTimeStamp() {
+    public String getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(Date timeStamp) {
+    public void setTimeStamp(String timeStamp) {
         this.timeStamp = timeStamp;
+    }
+
+    public String getAlertReason() {
+        return alertReason;
+    }
+
+    public void setAlertReason(String alertReason) {
+        this.alertReason = alertReason;
     }
 
     public String getAlertType() {
@@ -49,4 +58,5 @@ public class Alert {
     public void setAlertType(String alertType) {
         this.alertType = alertType;
     }
+
 }
