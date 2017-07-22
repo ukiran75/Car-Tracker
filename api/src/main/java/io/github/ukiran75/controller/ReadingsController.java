@@ -16,11 +16,13 @@ public class ReadingsController {
     ReadingsService readingsService;
 
 
+    //Mapping for post readings of vehicles
     @RequestMapping(method = RequestMethod.POST)
     void insertReadings(@RequestBody String readings) {
         readingsService.insertReadings(readings);
     }
 
+    //Mapping for getting readings of a particular vehicle
     @RequestMapping(method = RequestMethod.GET, path = "/{vin}")
     String getReadingsofVehicle(@PathVariable("vin") String vin){
         return readingsService.getReadingsofVehicle(vin);

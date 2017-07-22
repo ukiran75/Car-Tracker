@@ -3,11 +3,14 @@ package io.github.ukiran75.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.ukiran75.entity.Alert;
+import io.github.ukiran75.entity.VehicleAlerts;
 import io.github.ukiran75.exception.ResourceNotFoundException;
 import io.github.ukiran75.repository.AlertsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -22,11 +25,32 @@ public class AlertsServiceImpl implements AlertsService {
     /**
      * Method to insert the alert which will call the
      * insertalert method in alertsRepository.
-     *
      * @param alert
      */
     public void insertAlert(Alert alert) {
         alertsRepository.insertAlert(alert);
+
+    }
+
+
+    /**
+     * Method to get all alerts of all the vehicles along
+     * with the count of alerts for each vehicle
+     * @return Json String of all alerts
+     */
+    public String getAllAlertsofVehicles(){
+        Iterator<VehicleAlerts> alerts = alertsRepository.getAllAlerts();
+        List<VehicleAlerts> allVehicleAlerts = new ArrayList<VehicleAlerts>();
+        while(alerts.hasNext()) {
+            VehicleAlerts alert = alerts.next();
+            allVehicleAlerts.add(alert);
+        }
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(allVehicleAlerts);
+        } catch (JsonProcessingException e) {
+            throw new ResourceNotFoundException("Alerts data is not in valid format");
+        }
 
     }
 
@@ -38,10 +62,6 @@ public class AlertsServiceImpl implements AlertsService {
      */
     public String getAlertsofVehicle(String vin) {
         List<Alert> alerts = alertsRepository.getAlertsofVehicle(vin);
-        if(alerts.isEmpty())
-        {
-            throw new ResourceNotFoundException("No Alerts uploaded yet for the vehicle with vin: "+vin);
-        }
         ObjectMapper mapper = new ObjectMapper();
         try {
             return mapper.writeValueAsString(alerts);

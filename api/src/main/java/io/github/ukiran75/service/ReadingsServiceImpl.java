@@ -2,15 +2,14 @@ package io.github.ukiran75.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.org.apache.regexp.internal.RE;
 import io.github.ukiran75.entity.Alert;
 import io.github.ukiran75.entity.Reading;
 import io.github.ukiran75.entity.Tires;
 import io.github.ukiran75.entity.Vehicle;
 import io.github.ukiran75.exception.BadRequestException;
 import io.github.ukiran75.exception.ResourceNotFoundException;
+import io.github.ukiran75.mailService.MailService;
 import io.github.ukiran75.repository.ReadingsRepository;
-import io.github.ukiran75.repository.VehiclesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -20,6 +19,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Class Implementing the ReadingsService Interface.
@@ -34,6 +34,8 @@ public class ReadingsServiceImpl implements ReadingsService {
     VehiclesService vehiclesService;
     @Autowired
     AlertsService alertsService;
+    @Autowired
+    MailService mailService;
 
     /**
      * Method to insert the Readings data data and creating alerts
@@ -64,15 +66,12 @@ public class ReadingsServiceImpl implements ReadingsService {
 
     /**
      * Method to get all Readings oa particular vehicle
+     *
      * @param vin
-     * @return  string containing readings of vehicle
+     * @return string containing readings of vehicle
      */
     public String getReadingsofVehicle(String vin) {
         List<Reading> readings = readingsRepository.getReadingsofVehicle(vin);
-        if(readings.isEmpty())
-        {
-            throw new ResourceNotFoundException("No readings uploaded yet for the vehicle with vin: "+vin);
-        }
         ObjectMapper mapper = new ObjectMapper();
         try {
             return mapper.writeValueAsString(readings);
@@ -90,15 +89,19 @@ public class ReadingsServiceImpl implements ReadingsService {
      */
     @Async
     private void checkAlerts(Reading reading, Vehicle vehicle) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        Date date = new Date();
+        TimeZone tz = TimeZone.getTimeZone("UTC");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
+        df.setTimeZone(tz);
+        String date = df.format(new Date());
         Tires tires = reading.getTires();
         int[] tirePressures = {tires.getFrontLeft(), tires.getFrontRight(), tires.getRearLeft(), tires.getRearRight()};
         if (reading.getEngineRpm() > vehicle.getRedlineRpm()) {
             Alert alert = new Alert();
             alert.setVin(vehicle.getVin());
             alert.setTimeStamp(date);
+            alert.setAlertReason("High RPM");
             alert.setAlertType("HIGH");
+            mailService.sendEmail(alert);
             alertsService.insertAlert(alert);
         }
         if (reading.getFuelVolume() < (0.1 * vehicle.getMaxFuelVolume())) {
@@ -106,6 +109,7 @@ public class ReadingsServiceImpl implements ReadingsService {
             alert.setVin(vehicle.getVin());
             alert.setTimeStamp(date);
             alert.setAlertType("MEDIUM");
+            alert.setAlertReason("Low Fuel Volume");
             alertsService.insertAlert(alert);
         }
         if (reading.isEngineCoolantLow() || reading.isCheckEngineLightOn()) {
@@ -113,6 +117,10 @@ public class ReadingsServiceImpl implements ReadingsService {
             alert.setVin(vehicle.getVin());
             alert.setTimeStamp(date);
             alert.setAlertType("LOW");
+            if (reading.isEngineCoolantLow())
+                alert.setAlertReason("Engine Coolant Low");
+            else
+                alert.setAlertReason("Check Engine Light On");
             alertsService.insertAlert(alert);
         }
         for (int pressure : tirePressures) {
@@ -121,6 +129,10 @@ public class ReadingsServiceImpl implements ReadingsService {
                 alert.setVin(vehicle.getVin());
                 alert.setTimeStamp(date);
                 alert.setAlertType("LOW");
+                if (pressure < 32)
+                    alert.setAlertReason("Low Tire Pressure");
+                else
+                    alert.setAlertReason("High Tire Pressure");
                 alertsService.insertAlert(alert);
                 break;
             }

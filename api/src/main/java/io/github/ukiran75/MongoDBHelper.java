@@ -10,7 +10,7 @@ import org.mongodb.morphia.Morphia;
 import java.util.Arrays;
 
 /**
- * A single ton class to create a Datastore object which will be
+ * A singleton class to create a Datastore object which will be
  * used by all the repositories for persisting entities, querying from database.
  */
 public enum MongoDBHelper {
