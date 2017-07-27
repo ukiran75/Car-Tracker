@@ -29,6 +29,7 @@ You can find the live running version at the below link and it is also a respons
 
 ![alt HomePage](https://s3-us-west-1.amazonaws.com/full-stack-projects/Spring/Home+Page.png)
 
+
 2. All Vehicles `http://localhost:3000/vehicles`
 
 
@@ -36,14 +37,6 @@ You can find the live running version at the below link and it is also a respons
 
 3. Vehicle Info - Signal Readings `http://localhost:3000/vehicles/{VIN_NUMBER}`
 
-
-
-![alt HomePage](https://s3-us-west-1.amazonaws.com/full-stack-projects/Spring/Home+Page.png)
-
-2. All Vehicles `http://localhost:3000/vehicles`
-![alt AllVehicles](https://s3-us-west-1.amazonaws.com/full-stack-projects/Spring/All+Vehicle+List.png)
-
-3. Vehicle Info - Signal Readings `http://localhost:3000/vehicles/{VIN_NUMBER}`
 
 ![alt AllVehicles](https://s3-us-west-1.amazonaws.com/full-stack-projects/Spring/Vehicle+Info+-+Readings.png)
 
@@ -58,6 +51,7 @@ You can find the live running version at the below link and it is also a respons
 ![alt AllVehicles](https://s3-us-west-1.amazonaws.com/full-stack-projects/Spring/Vehicle+Info+-+Alerts.png)
 
 6. High Alerts of All Vehicles `http://localhost:3000/AllAlerts`
+
 
 ![alt AllVehicles](https://s3-us-west-1.amazonaws.com/full-stack-projects/Spring/High+Alerts.png)
 
