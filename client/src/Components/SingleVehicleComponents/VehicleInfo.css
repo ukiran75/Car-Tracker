@@ -1,0 +1,33 @@
+.ReadingsMargin{
+    margin-left: 20%;
+    margin-top: 5%;
+}
+.MapMargin{
+    margin-left: 20%;
+    margin-top: 5%;
+
+}
+.AlertsMargin{
+    margin-left: 7%;
+    margin-top: 5%;
+
+}
+@media (max-width: 720px) {
+    .ReadingsMargin{
+        margin-left: 2%;
+        margin-right: 2%;
+        margin-top: 2%;
+    }
+    .MapMargin{
+        margin-left: 2%;
+        margin-right: 2%;
+        margin-top: 2%;
+
+    }
+    .AlertsMargin{
+        margin-left: 2%;
+        margin-right: 2%;
+        margin-top: 2%;
+
+    }
+}
